@@ -2,6 +2,10 @@
 
 This release uses the public upstream v1.5.11 YouTube bundles and public Universal bundles. Two paired changes close the Official recursion path: the Composite bundle deletes `tlang` and `subtype`, then marks its internal source-subtitle fetch; the YouTube TimedText request bundle detects that mark and does not add `tlang` or `subtype` again.
 
+## Diagnose Translate
+
+If `Type=Translate` returns only the original subtitles, set the module parameters to `Debug=true` and `LogLevel=DEBUG`, reproduce the issue once, then export only the DualSubs-related script notes. The Translate response rule enables Surge's script-debug output only while `Debug=true`; turn it back off afterwards. Do not export request headers or URLs containing signed parameters.
+
 ## LAN test
 
 1. Disable every other DualSubs YouTube module.
