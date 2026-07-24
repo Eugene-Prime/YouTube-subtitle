@@ -1,10 +1,10 @@
 #!name = 🍿 DualSubs YouTube Fixed LAN
-#!desc = DualSubs YouTube local patch: avoids Official subtitle recursion
-#!author = DualSubs upstream / local patch
-#!homepage = https://github.com/DualSubs/YouTube
-#!version = 1.0.4-local
-#!arguments = Type:Official,AutoCC:true,Position:Forward,Vendor:Google,ShowOnly:false,Debug:false,LogLevel:WARN
-#!arguments-desc = Type: 字幕类型\nAutoCC: 自动开启字幕\nPosition: 原文位置\nVendor: 翻译服务\nShowOnly: 仅显示译文\nDebug: 输出诊断日志\nLogLevel: 日志等级
+#!desc = 修复 YouTube 字幕加载失败｜Fixed: prevents subtitle loading failures
+#!author = Original: DualSubs / VirgilClyne | Fixed by Eugene-Prime
+#!homepage = https://github.com/Eugene-Prime/YouTube-subtitle
+#!version = 1.1.0-local
+#!arguments = Type:Translate,AutoCC:true,Position:Forward,Vendor:Google,ShowOnly:false,Debug:false,LogLevel:WARN
+#!arguments-desc = Type: 字幕模式（推荐 Translate：翻译生成双语字幕；Official：YouTube 官方翻译合成；External：外挂字幕）\nAutoCC: 自动为原字幕添加目标语言；首次使用请在 YouTube 选择 自动翻译 → 中文（简体）\nPosition: 双语顺序（Forward：原文在上；Reverse：译文在上）\nVendor: 翻译服务（默认 Google；Microsoft、DeepL 等需要自行配置凭据）\nShowOnly: true 只显示译文；false 显示原文和译文\nDebug: true 输出 Surge 脚本诊断日志；排障后请关闭\nLogLevel: 日志级别（正常使用推荐 WARN；调试时使用 DEBUG）
 
 [Script]
 🍿 DualSubs.YouTube.Player.request.json = type=http-request, pattern=^https?:\/\/(www|m|tv)\.youtube\.com\/youtubei\/v1\/player(\?.+)?$, requires-body=1, engine=webview, script-path=http://REPLACE_LAN_IP:8080/YouTube.request.bundle.js?v=1.0.4-local, argument=Type={{{Type}}}&AutoCC={{{AutoCC}}}&Position={{{Position}}}&Vendor={{{Vendor}}}&ShowOnly={{{ShowOnly}}}&Debug={{{Debug}}}&LogLevel={{{LogLevel}}}
