@@ -28,6 +28,20 @@
 3. 保持默认 `Type=Translate`。/ Keep the default `Type=Translate`.
 4. 在 YouTube 选择“字幕 → 自动翻译 → 中文（简体）”。/ In YouTube choose “Subtitles → Auto-translate → Chinese (Simplified)”.
 
+## 平台状态 / Platform status
+
+| 平台 / Platform | 文件 / Package | 状态 / Status |
+| --- | --- | --- |
+| Surge | `DualSubs.YouTube.Fixed.sgmodule` | **已在 iOS 实机测试 / Tested on iOS** |
+| Loon | `DualSubs.YouTube.Fixed.Loon.plugin` | **未测试 / Untested** |
+| Quantumult X | `DualSubs.YouTube.Fixed.QX.conf` | **未测试 / Untested** |
+| Shadowrocket | `DualSubs.YouTube.Fixed.srmodule` | **未测试 / Untested** |
+| Stash | `DualSubs.YouTube.Fixed.Stash.yaml` | **未测试 / Untested** |
+
+除 Surge 外，其他文件根据上游模板适配并复用相同的修复 bundle，尚未经过实机验证。/ All non-Surge packages are adapted from upstream templates and reuse the same fixed bundles; they have not been device-tested.
+
+Quantumult X 没有 Surge 的参数面板；使用 QX 版本前，请在 DualSubs/BoxJs 设置中确认 `Type=Translate`。/ Quantumult X has no Surge-style parameter panel; set `Type=Translate` in DualSubs/BoxJs before using the QX package.
+
 ## 参数说明 / Parameters
 
 | 参数 / Parameter | 默认值 / Default | 说明 / Description |

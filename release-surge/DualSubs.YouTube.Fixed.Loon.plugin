@@ -1,0 +1,33 @@
+#!name = 🍿 DualSubs YouTube Fixed (Loon)
+#!desc = UNTESTED on Loon｜修复 YouTube 字幕加载失败
+#!author = Original: DualSubs / VirgilClyne | Fixed by Eugene-Prime
+#!homepage = https://github.com/Eugene-Prime/YouTube-subtitle
+#!version = 1.1.0-local
+
+# This package has not been tested on Loon. / 本文件尚未在 Loon 实机测试。
+
+[Argument]
+Type = select,"Translate","Official","External",tag=字幕模式,desc=推荐 Translate；官方 Official 模式可能受到 YouTube 限流。
+Types = input,"Translate",tag=歌词模式,desc=YouTube Music 歌词模式。
+AutoCC = switch,true,tag=自动字幕,desc=自动使用已选择的目标语言。
+Position = select,"Forward","Reverse",tag=双语顺序,desc=Forward 原文在上；Reverse 译文在上。
+Vendor = select,"Google","Microsoft",tag=翻译服务,desc=Microsoft 需要自行配置 API 凭据。
+ShowOnly = switch,false,tag=只显示译文,desc=false 显示双语字幕。
+Debug = switch,false,tag=诊断日志,desc=排障后请关闭。
+LogLevel = select,"WARN","OFF","ERROR","INFO","DEBUG","ALL",tag=日志级别,desc=日常使用 WARN。
+
+[Rewrite]
+^https?:\/\/([\w-]+)\.googlevideo\.com\/initplayback(\?.*oad=.+)$ reject-img
+
+[Script]
+http-request ^https?:\/\/(www|m|tv)\.youtube\.com\/youtubei\/v1\/player(\?.+)?$ requires-body=1, script-path=https://raw.githubusercontent.com/Eugene-Prime/YouTube-subtitle/main/release-surge/YouTube.request.bundle.js?v=1.0.4-local, tag=🍿 DualSubs.YouTube.Player.request, argument=[{Type},{Types},{AutoCC},{Position},{Vendor},{ShowOnly},{Debug},{LogLevel}]
+http-response ^https?:\/\/(www|m|tv)\.youtube\.com\/youtubei\/v1\/player(\?.+)?$ requires-body=1, script-path=https://raw.githubusercontent.com/Eugene-Prime/YouTube-subtitle/main/release-surge/YouTube.response.bundle.js?v=1.0.4-local, tag=🍿 DualSubs.YouTube.Player.response, argument=[{Type},{Types},{AutoCC},{Position},{Vendor},{ShowOnly},{Debug},{LogLevel}]
+http-request ^https?:\/\/youtubei(?:-att)?\.googleapis\.com\/youtubei\/v1\/player(\?.+)?$ requires-body=1, binary-body-mode=1, script-path=https://raw.githubusercontent.com/Eugene-Prime/YouTube-subtitle/main/release-surge/YouTube.request.bundle.js?v=1.0.4-local, tag=🍿 DualSubs.YouTube.Player.request.proto, argument=[{Type},{Types},{AutoCC},{Position},{Vendor},{ShowOnly},{Debug},{LogLevel}]
+http-response ^https?:\/\/youtubei(?:-att)?\.googleapis\.com\/youtubei\/v1\/player(\?.+)?$ requires-body=1, binary-body-mode=1, script-path=https://raw.githubusercontent.com/Eugene-Prime/YouTube-subtitle/main/release-surge/YouTube.response.bundle.js?v=1.0.4-local, tag=🍿 DualSubs.YouTube.Player.response.proto, argument=[{Type},{Types},{AutoCC},{Position},{Vendor},{ShowOnly},{Debug},{LogLevel}]
+http-response ^https?:\/\/youtubei(?:-att)?\.googleapis\.com\/youtubei\/v1\/get_watch(\?.+)?$ requires-body=1, binary-body-mode=1, script-path=https://raw.githubusercontent.com/Eugene-Prime/YouTube-subtitle/main/release-surge/YouTube.response.bundle.js?v=1.0.4-local, tag=🍿 DualSubs.YouTube.GetWatch.response, argument=[{Type},{Types},{AutoCC},{Position},{Vendor},{ShowOnly},{Debug},{LogLevel}]
+http-request ^https?:\/\/(www|m)\.youtube\.com\/api\/timedtext(\?.+)?$ script-path=https://raw.githubusercontent.com/Eugene-Prime/YouTube-subtitle/main/release-surge/YouTube.request.bundle.js?v=1.0.4-local, tag=🍿 DualSubs.YouTube.TimedText.request, argument=[{Type},{Types},{AutoCC},{Position},{Vendor},{ShowOnly},{Debug},{LogLevel}]
+http-response ^https?:\/\/(www|m)\.youtube\.com\/api\/timedtext\?(.*)subtype=(Official|External) requires-body=1, script-path=https://raw.githubusercontent.com/Eugene-Prime/YouTube-subtitle/main/release-surge/Composite.Subtitles.response.bundle.js?v=1.0.4-local, tag=🍿 DualSubs.YouTube.Composite.response, argument=[{Type},{Types},{AutoCC},{Position},{Vendor},{ShowOnly},{Debug},{LogLevel}]
+http-response ^https?:\/\/(www|m)\.youtube\.com\/api\/timedtext\?(.*)subtype=Translate requires-body=1, timeout=7, script-path=https://raw.githubusercontent.com/Eugene-Prime/YouTube-subtitle/main/release-surge/Translate.response.bundle.js?v=1.0.4-local, tag=🍿 DualSubs.YouTube.Translate.response, argument=[{Type},{Types},{AutoCC},{Position},{Vendor},{ShowOnly},{Debug},{LogLevel}]
+
+[MITM]
+hostname = www.youtube.com, m.youtube.com, tv.youtube.com, music.youtube.com, youtubei.googleapis.com, youtubei-att.googleapis.com, -redirector*.googlevideo.com, *.googlevideo.com

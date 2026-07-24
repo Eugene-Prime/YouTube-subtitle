@@ -1,0 +1,81 @@
+name: "🍿 DualSubs YouTube Fixed (Stash)"
+desc: "UNTESTED on Stash｜修复 YouTube 字幕加载失败"
+author: "Original: DualSubs / VirgilClyne | Fixed by Eugene-Prime"
+homepage: "https://github.com/Eugene-Prime/YouTube-subtitle"
+version: "1.1.0-local"
+
+# This module has not been tested on Stash. / 本模块尚未在 Stash 实机测试。
+
+http:
+  mitm:
+    - "www.youtube.com"
+    - "m.youtube.com"
+    - "tv.youtube.com"
+    - "music.youtube.com"
+    - "youtubei.googleapis.com"
+    - "youtubei-att.googleapis.com"
+    - "-redirector*.googlevideo.com"
+    - "*.googlevideo.com"
+  rewrite:
+    - ^https?:\/\/([\w-]+)\.googlevideo\.com\/initplayback(\?.*oad=.+)$ - reject
+  script:
+    - match: ^https?:\/\/(www|m|tv)\.youtube\.com\/youtubei\/v1\/player(\?.+)?$
+      name: "🍿 DualSubs.YouTube.Player.request"
+      type: request
+      require-body: true
+      argument: "Type=Translate&Types=Translate&AutoCC=true&Position=Forward&Vendor=Google&ShowOnly=false&Debug=false&LogLevel=WARN"
+    - match: ^https?:\/\/(www|m|tv)\.youtube\.com\/youtubei\/v1\/player(\?.+)?$
+      name: "🍿 DualSubs.YouTube.Player.response"
+      type: response
+      require-body: true
+      argument: "Type=Translate&Types=Translate&AutoCC=true&Position=Forward&Vendor=Google&ShowOnly=false&Debug=false&LogLevel=WARN"
+    - match: ^https?:\/\/youtubei(?:-att)?\.googleapis\.com\/youtubei\/v1\/player(\?.+)?$
+      name: "🍿 DualSubs.YouTube.Player.request"
+      type: request
+      require-body: true
+      binary-mode: true
+      argument: "Type=Translate&Types=Translate&AutoCC=true&Position=Forward&Vendor=Google&ShowOnly=false&Debug=false&LogLevel=WARN"
+    - match: ^https?:\/\/youtubei(?:-att)?\.googleapis\.com\/youtubei\/v1\/player(\?.+)?$
+      name: "🍿 DualSubs.YouTube.Player.response"
+      type: response
+      require-body: true
+      binary-mode: true
+      argument: "Type=Translate&Types=Translate&AutoCC=true&Position=Forward&Vendor=Google&ShowOnly=false&Debug=false&LogLevel=WARN"
+    - match: ^https?:\/\/youtubei(?:-att)?\.googleapis\.com\/youtubei\/v1\/get_watch(\?.+)?$
+      name: "🍿 DualSubs.YouTube.Player.response"
+      type: response
+      require-body: true
+      binary-mode: true
+      argument: "Type=Translate&Types=Translate&AutoCC=true&Position=Forward&Vendor=Google&ShowOnly=false&Debug=false&LogLevel=WARN"
+    - match: ^https?:\/\/(www|m)\.youtube\.com\/api\/timedtext(\?.+)?$
+      name: "🍿 DualSubs.YouTube.TimedText.request"
+      type: request
+      argument: "Type=Translate&Types=Translate&AutoCC=true&Position=Forward&Vendor=Google&ShowOnly=false&Debug=false&LogLevel=WARN"
+    - match: ^https?:\/\/(www|m)\.youtube\.com\/api\/timedtext\?(.*)subtype=(Official|External)
+      name: "🍿 DualSubs.YouTube.Composite.response"
+      type: response
+      require-body: true
+      argument: "Type=Translate&Types=Translate&AutoCC=true&Position=Forward&Vendor=Google&ShowOnly=false&Debug=false&LogLevel=WARN"
+    - match: ^https?:\/\/(www|m)\.youtube\.com\/api\/timedtext\?(.*)subtype=Translate
+      name: "🍿 DualSubs.YouTube.Translate.response"
+      type: response
+      require-body: true
+      timeout: 7
+      argument: "Type=Translate&Types=Translate&AutoCC=true&Position=Forward&Vendor=Google&ShowOnly=false&Debug=false&LogLevel=WARN"
+
+script-providers:
+  "🍿 DualSubs.YouTube.Player.request":
+    url: "https://raw.githubusercontent.com/Eugene-Prime/YouTube-subtitle/main/release-surge/YouTube.request.bundle.js?v=1.0.4-local"
+    interval: 86400
+  "🍿 DualSubs.YouTube.Player.response":
+    url: "https://raw.githubusercontent.com/Eugene-Prime/YouTube-subtitle/main/release-surge/YouTube.response.bundle.js?v=1.0.4-local"
+    interval: 86400
+  "🍿 DualSubs.YouTube.TimedText.request":
+    url: "https://raw.githubusercontent.com/Eugene-Prime/YouTube-subtitle/main/release-surge/YouTube.request.bundle.js?v=1.0.4-local"
+    interval: 86400
+  "🍿 DualSubs.YouTube.Composite.response":
+    url: "https://raw.githubusercontent.com/Eugene-Prime/YouTube-subtitle/main/release-surge/Composite.Subtitles.response.bundle.js?v=1.0.4-local"
+    interval: 86400
+  "🍿 DualSubs.YouTube.Translate.response":
+    url: "https://raw.githubusercontent.com/Eugene-Prime/YouTube-subtitle/main/release-surge/Translate.response.bundle.js?v=1.0.4-local"
+    interval: 86400

@@ -23,6 +23,18 @@
 
 完整的修复说明、限制和参数表见 [release-surge/README.md](release-surge/README.md)。 / See [release-surge/README.md](release-surge/README.md) for full repair notes, limitations, and parameter descriptions.
 
+## 平台状态 / Platform status
+
+| Platform / 平台 | Package / 文件 | Status / 状态 |
+| --- | --- | --- |
+| Surge | `.sgmodule` | **Tested on iOS / 已在 iOS 实机测试** |
+| Loon | `.plugin` | **Untested / 未测试** |
+| Quantumult X | `.conf` | **Untested / 未测试** |
+| Shadowrocket | `.srmodule` | **Untested / 未测试** |
+| Stash | `.yaml` | **Untested / 未测试** |
+
+除 Surge 外，其余文件仅根据上游平台模板适配并复用了同一套修复 bundle；请先在测试配置中验证。 / Other packages are adapted from upstream platform templates and reuse the same fixed bundles; test them in a non-production profile first.
+
 ## 修复内容 / Fixes
 
 - 阻止 Official 模式的内部字幕请求再次触发字幕处理链。/ Prevents Official-mode internal subtitle fetches from re-entering the subtitle pipeline.
@@ -32,6 +44,9 @@
 ## 文件 / Files
 
 - [正式模块 / Production module](release-surge/DualSubs.YouTube.Fixed.sgmodule)
+- [Loon plugin / Loon 插件](release-surge/DualSubs.YouTube.Fixed.Loon.plugin)
+- [Quantumult X config / QX 配置](release-surge/DualSubs.YouTube.Fixed.QX.conf)
+- [Shadowrocket module / Shadowrocket 模块](release-surge/DualSubs.YouTube.Fixed.srmodule)
+- [Stash module / Stash 模块](release-surge/DualSubs.YouTube.Fixed.Stash.yaml)
 - [局域网测试模块 / LAN test module](release-surge/DualSubs.YouTube.Fixed.LAN.sgmodule)
 - [校验和 / SHA-256 checksums](release-surge/SHA256SUMS.txt)
-
