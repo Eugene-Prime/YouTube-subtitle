@@ -1,0 +1,20 @@
+#!name = 🍿 DualSubs YouTube Fixed LAN
+#!desc = DualSubs YouTube local patch: avoids Official subtitle recursion
+#!author = DualSubs upstream / local patch
+#!homepage = https://github.com/DualSubs/YouTube
+#!version = 1.0.0-local
+#!arguments = Type:Official,AutoCC:true,Position:Forward,Vendor:Google,ShowOnly:false,Debug:false,LogLevel:WARN
+#!arguments-desc = Type: 字幕类型\nAutoCC: 自动开启字幕\nPosition: 原文位置\nVendor: 翻译服务\nShowOnly: 仅显示译文\nDebug: 输出诊断日志\nLogLevel: 日志等级
+
+[Script]
+🍿 DualSubs.YouTube.Player.request.json = type=http-request, pattern=^https?:\/\/(www|m|tv)\.youtube\.com\/youtubei\/v1\/player(\?.+)?$, requires-body=1, engine=webview, script-path=http://REPLACE_LAN_IP:8080/YouTube.request.bundle.js, argument=Type={{{Type}}}&AutoCC={{{AutoCC}}}&Position={{{Position}}}&Vendor={{{Vendor}}}&ShowOnly={{{ShowOnly}}}&Debug={{{Debug}}}&LogLevel={{{LogLevel}}}
+🍿 DualSubs.YouTube.Player.response.json = type=http-response, pattern=^https?:\/\/(www|m|tv)\.youtube\.com\/youtubei\/v1\/player(\?.+)?$, requires-body=1, engine=webview, script-path=http://REPLACE_LAN_IP:8080/YouTube.response.bundle.js, argument=Type={{{Type}}}&AutoCC={{{AutoCC}}}&Position={{{Position}}}&Vendor={{{Vendor}}}&ShowOnly={{{ShowOnly}}}&Debug={{{Debug}}}&LogLevel={{{LogLevel}}}
+🍿 DualSubs.YouTube.Player.request.proto = type=http-request, pattern=^https?:\/\/youtubei(?:-att)?\.googleapis\.com\/youtubei\/v1\/player(\?.+)?$, requires-body=1, binary-body-mode=1, engine=webview, script-path=http://REPLACE_LAN_IP:8080/YouTube.request.bundle.js, argument=Type={{{Type}}}&AutoCC={{{AutoCC}}}&Position={{{Position}}}&Vendor={{{Vendor}}}&ShowOnly={{{ShowOnly}}}&Debug={{{Debug}}}&LogLevel={{{LogLevel}}}
+🍿 DualSubs.YouTube.Player.response.proto = type=http-response, pattern=^https?:\/\/youtubei(?:-att)?\.googleapis\.com\/youtubei\/v1\/player(\?.+)?$, requires-body=1, binary-body-mode=1, engine=webview, script-path=http://REPLACE_LAN_IP:8080/YouTube.response.bundle.js, argument=Type={{{Type}}}&AutoCC={{{AutoCC}}}&Position={{{Position}}}&Vendor={{{Vendor}}}&ShowOnly={{{ShowOnly}}}&Debug={{{Debug}}}&LogLevel={{{LogLevel}}}
+🍿 DualSubs.YouTube.GetWatch.response.proto = type=http-response, pattern=^https?:\/\/youtubei(?:-att)?\.googleapis\.com\/youtubei\/v1\/get_watch(\?.+)?$, requires-body=1, binary-body-mode=1, engine=webview, script-path=http://REPLACE_LAN_IP:8080/YouTube.response.bundle.js, argument=Type={{{Type}}}&AutoCC={{{AutoCC}}}&Position={{{Position}}}&Vendor={{{Vendor}}}&ShowOnly={{{ShowOnly}}}&Debug={{{Debug}}}&LogLevel={{{LogLevel}}}
+🍿 DualSubs.YouTube.TimedText.request = type=http-request, pattern=^https?:\/\/(www|m)\.youtube\.com\/api\/timedtext(\?.+)?$, engine=webview, script-path=http://REPLACE_LAN_IP:8080/YouTube.request.bundle.js, argument=Type={{{Type}}}&AutoCC={{{AutoCC}}}&Position={{{Position}}}&Vendor={{{Vendor}}}&ShowOnly={{{ShowOnly}}}&Debug={{{Debug}}}&LogLevel={{{LogLevel}}}
+🍿 DualSubs.YouTube.Composite.TimedText.response = type=http-response, pattern=^https?:\/\/(www|m)\.youtube\.com\/api\/timedtext\?(.*)subtype=(Official|External), requires-body=1, script-path=http://REPLACE_LAN_IP:8080/Composite.Subtitles.response.bundle.js, argument=Type={{{Type}}}&AutoCC={{{AutoCC}}}&Position={{{Position}}}&Vendor={{{Vendor}}}&ShowOnly={{{ShowOnly}}}&Debug={{{Debug}}}&LogLevel={{{LogLevel}}}
+🍿 DualSubs.YouTube.Translate.TimedText.response = type=http-response, pattern=^https?:\/\/(www|m)\.youtube\.com\/api\/timedtext\?(.*)subtype=Translate, requires-body=1, script-path=http://REPLACE_LAN_IP:8080/Translate.response.bundle.js, argument=Type={{{Type}}}&AutoCC={{{AutoCC}}}&Position={{{Position}}}&Vendor={{{Vendor}}}&ShowOnly={{{ShowOnly}}}&Debug={{{Debug}}}&LogLevel={{{LogLevel}}}
+
+[MITM]
+hostname = %APPEND% www.youtube.com, m.youtube.com, tv.youtube.com, music.youtube.com, youtubei.googleapis.com, youtubei-att.googleapis.com, -redirector*.googlevideo.com, *.googlevideo.com
