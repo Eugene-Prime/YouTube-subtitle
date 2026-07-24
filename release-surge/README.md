@@ -1,6 +1,6 @@
 # DualSubs YouTube local patch
 
-This release uses the public upstream v1.5.11 YouTube bundles and public Universal bundles. The Composite bundle has exactly one intentional change: the YouTube Official internal source-subtitle fetch deletes `subtype` after deleting `tlang`. This prevents the internal fetch from matching the Composite response rule again.
+This release uses the public upstream v1.5.11 YouTube bundles and public Universal bundles. Two paired changes close the Official recursion path: the Composite bundle deletes `tlang` and `subtype`, then marks its internal source-subtitle fetch; the YouTube TimedText request bundle detects that mark and does not add `tlang` or `subtype` again.
 
 ## LAN test
 
